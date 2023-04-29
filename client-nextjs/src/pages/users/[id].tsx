@@ -31,8 +31,9 @@ const UserDetail = ({ user, todos } : Props) => {
     const form = React.useRef()
     const [todosCopy, setTodosCopy] = React.useState(todos)
 
-    const [stateForm, setStateForm] = React.useState<boolean>(false)
     const [todoContent, setTodoContent] = React.useState<string>('')
+    const [todoEdit, setTodoEdit] = React.useState<string>('')
+    const [idEdit, setIdEdit] = React.useState<string>('')
 
     const SubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -42,6 +43,17 @@ const UserDetail = ({ user, todos } : Props) => {
         }
 
         setTodoContent('')
+        updateData()
+    }
+
+    const SubmitFormEdit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+
+        if (todoEdit.length > 0) {
+            await axios.post('/api/todos/edit', { id: idEdit, todo: todoEdit })
+        }
+
+        setIdEdit('')
         updateData()
     }
 
@@ -55,9 +67,10 @@ const UserDetail = ({ user, todos } : Props) => {
         //   location.reload();
     }
 
-    const editTodo = async (id: string) => {
+    const editTodo = async (id: string, content: string) => {
         // await axios.post('/api/todos/edit', { id, todo})
-        console.log(id)
+        setIdEdit(id)
+        setTodoEdit(content)
     }
 
     const deleteTodo = async (id: string) => {
@@ -114,21 +127,17 @@ const UserDetail = ({ user, todos } : Props) => {
                                 {/* <button className='bg-blue-400 hover:bg-blue-500 px-3 py-1.5 rounded-md text-neutral-50'>Add new Todo</button> */}
                             </div>
                         </div>
-                        {
-                            stateForm === false
-                            ? <div className='my-4 border p-3 rounded-md'>
-                                <form onSubmit={SubmitForm} className='flex justify-between items-center'>
-                                    <div>
-                                        <label htmlFor="todo">New: </label>
-                                        <input type="text" value={todoContent} id="todo" className='border-b focus:outline-none ml-2' placeholder='Enter your Content.' onChange={(e) => setTodoContent(e.target.value)} />
-                                    </div>
-                                    <div>
-                                        <button className='bg-green-300 hover:bg-green-400 px-3 py-1 rounded-md'>Enter</button>
-                                    </div>
-                                </form>
-                              </div>
-                            : ''
-                        }
+                        <div className='my-4 border p-3 rounded-md'>
+                            <form onSubmit={SubmitForm} className='flex justify-between items-center'>
+                                <div>
+                                    <label htmlFor="todo">New: </label>
+                                    <input type="text" value={todoContent} id="todo" className='border-b focus:outline-none ml-2' placeholder='Enter your Content.' onChange={(e) => setTodoContent(e.target.value)} />
+                                </div>
+                                <div>
+                                    <button className='bg-green-300 hover:bg-green-400 px-3 py-1 rounded-md'>Enter</button>
+                                </div>
+                            </form>
+                        </div>
                         <div className='border mt-4 rounded-md'>
                             {
                                 todosCopy.length === 0
@@ -146,13 +155,28 @@ const UserDetail = ({ user, todos } : Props) => {
                                             <p className={ doc.completed === true ? 'line-through' : ''}>{doc.todo.substring(0, 1).toUpperCase() + doc.todo.substring(1, doc.todo.length)}</p>
                                         </div>
                                         <div className='asbolute pr-4 text-neutral-400 space-x-4 '>
-                                            <button className='text-amber-300 hover:text-amber-400' onClick={() => editTodo(doc._id)}><FontAwesomeIcon icon={faPenToSquare} className='' /></button>
+                                            <button className='text-amber-300 hover:text-amber-400' onClick={() => editTodo(doc._id, doc.todo)}><FontAwesomeIcon icon={faPenToSquare} className='' /></button>
                                             <button className='text-red-300 hover:text-red-400' onClick={() => deleteTodo(doc._id)}><FontAwesomeIcon icon={faTrashCan} /></button>
                                         </div>
                                     </div>
                                   ))
                             }
                         </div>
+                        {
+                            idEdit.length > 0
+                                ? <div className='my-4 border p-3 rounded-md'>
+                                    <form onSubmit={SubmitFormEdit} className='flex justify-between items-center'>
+                                        <div>
+                                            <label htmlFor="todo">Edit: </label>
+                                            <input type="text" value={todoEdit} id="todo" className='border-b focus:outline-none ml-2' placeholder='Enter your Content.' onChange={(e) => setTodoEdit(e.target.value)} />
+                                        </div>
+                                        <div>
+                                            <button className='bg-green-300 hover:bg-green-400 px-3 py-1 rounded-md'>Enter</button>
+                                        </div>
+                                    </form>
+                                  </div>
+                                : ''
+                        }
                     </div>
                 </div>
             </main>
