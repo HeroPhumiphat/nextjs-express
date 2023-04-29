@@ -18,7 +18,7 @@ export default function About() {
                     </div>
                     <br />
                     <div className='text-lg font-bold'>
-                        <h1 className='mb-0.5 mx-5'>Front-End</h1>
+                        <h1 className='mb-0.5 mx-5 up'>Client-Nextjs</h1>
                         <div className='bg-gradient-to-r from-transparent via-neutral-500 via-50% to-transparent w-full' style={{height: 0.8}}></div>
                     </div>
                     <p><span className='font-bold'>Create Product:</span> Next.js</p>
@@ -43,7 +43,7 @@ export default function About() {
 
                     <br/>
                     <div className='text-lg font-bold'>
-                        <h1 className='mb-0.5 mx-5'>Back-End</h1>
+                        <h1 className='mb-0.5 mx-5'>Server-Express</h1>
                         <div className='bg-gradient-to-r from-transparent via-neutral-500 via-50% to-transparent w-full' style={{height: 0.8}}></div>
                     </div>
                     <p><span className='font-bold'>Node.js Framework:</span> Express.js</p>

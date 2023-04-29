@@ -9,11 +9,10 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'content already exists' })
   }
 
-  const user = await Users.findOne({ _id: req.body.userId })
+  const user = await Users.findOne({ _id: req.body.atUserId })
 
   const form = req.body
   const data = {
-    id: form.id,
     todo: form.todo,
     completed: form.completed,
     userId: user._id

@@ -9,7 +9,6 @@ module.exports = async (req, res) => {
     )
     if (updateTodo) {
       res.json({ success: true })
-      console.log({ updateTodo })
     } else {
       res.json({ success: false, message: 'Todo not found' })
     }
